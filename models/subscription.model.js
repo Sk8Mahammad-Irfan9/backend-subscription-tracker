@@ -9,7 +9,7 @@ const subscriptionSchema = mongoose.Schema(
       minLength: 2,
       maxLength: 100,
     },
-    prince: {
+    price: {
       type: Number,
       require: [true, "Subscription price is required"],
       min: [0, "Price must be greater than 0"],
