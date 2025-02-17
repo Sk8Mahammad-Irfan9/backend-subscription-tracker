@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { emailTemplates } from "./email-template";
-import { accountEmail } from "../config/nodemailer";
+import { emailTemplates } from "./email-template.js";
+import { accountEmail } from "../config/nodemailer.js";
 
 export const sendReminderEmail = async ({ to, type, subscription }) => {
   if (!to || !type) throw new Error("Missing required template");
