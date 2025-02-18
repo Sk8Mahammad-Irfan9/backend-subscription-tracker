@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  deleteUserById,
   getUser,
   getUsers,
   updateUser,
@@ -12,14 +13,12 @@ userRouter.get("/", getUsers);
 
 userRouter.get("/:id", authorize, getUser);
 
-userRouter.post("/get", (req, res) => {
-  res.send({ title: "Create new user" });
-});
+// userRouter.post("/get", (req, res) => {
+//   res.send({ title: "Create new user" });
+// });
 
 userRouter.put("/:id", authorize, updateUser);
 
-userRouter.delete("/:id", (req, res) => {
-  res.send({ title: "delete user" });
-});
+userRouter.delete("/:id", authorize,deleteUserById);
 
 export default userRouter;

@@ -30,6 +30,11 @@ export const updateUser = async (req, res, next) => {
 
   session.startTransaction();
   try {
+    if (req.user.id !== req.params.id) {
+      const error = new Error("You are not the owner of this account");
+      error.status = 401;
+      throw error;
+    }
     const users = await User.findById(req.params.id);
 
     if (!users) {
@@ -50,6 +55,29 @@ export const updateUser = async (req, res, next) => {
     await session.commitTransaction();
     session.endSession();
     res.status(200).json({ success: true, data: users });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteUserById = async (req, res, next) => {
+  try {
+    if (req.user.id !== req.params.id) {
+      const error = new Error("You are not the owner of this account");
+      error.status = 401;
+      throw error;
+    }
+    const user = await User.findByIdAndDelete(req.params.id);
+
+    if (!user) {
+      const error = new Error("user not found");
+      error.statusCode = 404;
+      throw error;
+    }
+    res.status(200).json({
+      success: true,
+      message: "Successfully user deleted",
+    });
   } catch (error) {
     next(error);
   }

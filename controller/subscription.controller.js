@@ -56,3 +56,40 @@ export const getSubscriptions = async (req, res, next) => {
     next(error);
   }
 };
+
+export const subscriptionById = async (req, res, next) => {
+  try {
+    const subscription = await Subscription.findById(req.params.id);
+    if (!subscription) {
+      const error = new Error("Subscription not found");
+      error.statusCode = 404;
+      throw error;
+    }
+    res.status(200).json({ success: true, data: subscription });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteSubscriptionById = async (req, res, next) => {
+  try {
+    if (req.user.id !== req.params.id) {
+      const error = new Error("You are not the owner of this account");
+      error.status = 401;
+      throw error;
+    }
+    const subscription = await Subscription.findByIdAndDelete(req.params.id);
+
+    if (!subscription) {
+      const error = new Error("Subscription not found");
+      error.statusCode = 404;
+      throw error;
+    }
+    res.status(200).json({
+      success: true,
+      message: "Subscription deleted successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
